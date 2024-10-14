@@ -21,25 +21,6 @@ import pydantic
 url = "http://localhost:6333"
 
 app = FastAPI()
-# llm = VLLMOpenAI(
-#     openai_api_key="wiz-andromeda-001",
-#     openai_api_base="http://192.168.2.42:8000/v1",
-#     model_name="neuralmagic/Meta-Llama-3.1-8B-Instruct-FP8",
-# )
-
-# RAG_PROMPT_TEMPLATE = """\
-# <|start_header_id|>system<|end_header_id|>
-# You are a helpful assistant. You answer user questions based on provided context. If you can't answer the question with the provided context, say you don't know.<|eot_id|>
-
-# <|start_header_id|>user<|end_header_id|>
-# User Query:
-# {query}
-
-# Context:
-# {context}<|eot_id|>
-
-# <|start_header_id|>assistant<|end_header_id|>
-# """
 
 llm = ChatOllama(
     model='llama3.2:1b',
@@ -47,7 +28,7 @@ llm = ChatOllama(
 )
 
 RAG_PROMPT_TEMPLATE = """\
-Answer the questions based on the context provided. If the context doesn't have the answer, say that you
+Answer the user's query based on the context provided below. If the context doesn't have the answer, say that you
 don't know the answer.
 
 User Query:
@@ -88,13 +69,6 @@ class Output(BaseModel):
 @app.get("/")
 async def redirect_root_to_docs():
     return RedirectResponse("/docs")
-
-# add_routes(
-#     app, 
-#     lcel_rag_chain.with_types(input_type=Input, output_type=Output).with_config(
-#         {"run_name" : "EU"}
-#     )
-# )
 
 add_routes(
     app, 
