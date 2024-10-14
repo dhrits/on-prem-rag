@@ -23,7 +23,7 @@ url = "http://localhost:6333"
 app = FastAPI()
 
 llm = ChatOllama(
-    model='llama3.2:1b',
+    model='llama3.2',
     temperature=0
 )
 
@@ -53,7 +53,7 @@ vector_store = QdrantVectorStore(
 
 retriever = vector_store.as_retriever()
 
-lcel_rag_chain = {"context": itemgetter("query") | retriever, "query": itemgetter("query")}| rag_prompt | llm
+lcel_rag_chain = {"context": (itemgetter("query") | retriever), "query": itemgetter("query")}| rag_prompt | llm
 
 
 
